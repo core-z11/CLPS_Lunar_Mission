@@ -163,11 +163,11 @@ export function relayState(
     altitudeKm: Math.sqrt(dot(pos, pos)) - MOON_RADIUS_KM,
     elevation: h.elevation,
     azimuth: h.azimuth,
-    rangeKm: h.rangeKm ?? h.range,
+    rangeKm: h.range,
     siteVisible,
     earthVisible,
     linkAvailable: siteVisible && earthVisible,
-  } as RelayState;
+  };
 }
 
 export function relayStates(
