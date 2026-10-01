@@ -132,11 +132,23 @@ export function Field({ label, children }: { label: string; children: ReactNode 
 export const inputClass =
   "w-full rounded-md border border-input bg-background/60 px-3 py-2 font-mono text-sm text-foreground outline-none transition-colors focus:border-ring";
 
+const barTone: Record<Tone, string> = {
+  favorable: "bg-favorable",
+  caution: "bg-caution",
+  critical: "bg-critical",
+  unknown: "bg-unknown",
+  earth: "bg-earth",
+  sun: "bg-sun",
+  relay: "bg-relay",
+};
+
+export const scoreTone = (v: number): Tone => (v >= 75 ? "favorable" : v >= 55 ? "caution" : "critical");
+
 export function ScoreBar({ value, tone }: { value: number; tone: Tone }) {
   return (
     <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
       <div
-        className={cn("h-full rounded-full transition-all duration-300", `bg-${tone}`)}
+        className={cn("h-full rounded-full transition-all duration-300", barTone[tone])}
         style={{ width: `${Math.max(2, Math.min(100, value))}%` }}
       />
     </div>
