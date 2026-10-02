@@ -17,6 +17,7 @@ export interface SamplePoint {
   sunElevation: number;
   earthElevation: number;
   relayLinks: number;
+  relayIds: string[];
 }
 
 export interface Window {
@@ -84,14 +85,16 @@ export function sampleWindow(
   for (let i = 0; i <= steps; i++) {
     const time = new Date(startMs + (i / steps) * spanHours * 3600 * 1000);
     const s = skyState(time, lat, lon, elevationM);
-    const links = relayStates(time, lat, lon, elevationM, enabledRelays).filter(
-      (r) => r.linkAvailable,
-    ).length;
+    const linkedIds = relayStates(time, lat, lon, elevationM, enabledRelays)
+      .filter((r) => r.linkAvailable)
+      .map((r) => r.relay.id);
+    const links = linkedIds.length;
     out.push({
       time,
       sunElevation: s.sun.elevation,
       earthElevation: s.earth.elevation,
       relayLinks: links,
+      relayIds: linkedIds,
     });
   }
   return out;
