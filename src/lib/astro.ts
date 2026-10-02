@@ -305,3 +305,13 @@ export const formatDuration = (hours: number) => {
   const m = Math.round((hours - h) * 60);
   return `${h}h ${String(m).padStart(2, "0")}m`;
 };
+
+/** Unit directions (Moon body frame) from the Moon centre to the Sun and Earth. */
+export function bodyDirections(date: Date) {
+  const jd = julianDay(date);
+  const rMoon = moonPositionKm(jd);
+  return {
+    sun: unit(toBodyFrame(sub(sunPositionKm(jd), rMoon), jd)),
+    earth: unit(toBodyFrame(scale(rMoon, -1), jd)),
+  };
+}
