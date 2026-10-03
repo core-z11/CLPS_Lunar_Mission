@@ -39,7 +39,7 @@ const DEMO_DATE = new Date(Date.UTC(2026, 9, 5, 18, 30));
 const iso = (d: Date) => d.toISOString().slice(0, 16);
 
 function Mission() {
-  const [siteId, setSiteId] = useState(LUNAR_SITES[0].id);
+  const [siteId, setSiteId] = useState(LUNAR_SITES[0]!.id);
   const [custom, setCustom] = useState<{ lat: number; lon: number } | null>(null);
   const [baseDate, setBaseDate] = useState(DEMO_DATE);
   const [offsetH, setOffsetH] = useState(0);
@@ -47,7 +47,7 @@ function Mission() {
   const [playing, setPlaying] = useState(false);
   const [view, setView] = useState<"3D" | "2D">("3D");
   const [radiusKm, setRadiusKm] = useState(0.5);
-  const [draft, setDraft] = useState({ lat: String(LUNAR_SITES[0].lat), lon: String(LUNAR_SITES[0].lon), date: iso(DEMO_DATE) });
+  const [draft, setDraft] = useState({ lat: String(LUNAR_SITES[0]!.lat), lon: String(LUNAR_SITES[0]!.lon), date: iso(DEMO_DATE) });
   const [err, setErr] = useState<string | null>(null);
   const [drawer, setDrawer] = useState<null | "check" | "terrain" | "weather" | "data">(null);
   const [camera, setCamera] = useState(false);

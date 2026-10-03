@@ -164,7 +164,7 @@ export const getSpaceWeather = createServerFn({ method: "GET" }).handler(
           Number(a["flux"]) > Number(b["flux"]) ? a : b,
         );
         const latest = longBand[longBand.length - 1];
-        xrayClass = xrayClassFromFlux(Number(latest["flux"]));
+        xrayClass = xrayClassFromFlux(Number(latest!["flux"]));
         events.push({
           id: "goes-peak",
           type: "FLARE",

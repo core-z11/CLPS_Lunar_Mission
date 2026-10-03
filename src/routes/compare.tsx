@@ -19,7 +19,7 @@ export const Route = createFileRoute("/compare")({
 });
 
 function Compare() {
-  const [ids, setIds] = useState([LUNAR_SITES[0].id, LUNAR_SITES[2].id, LUNAR_SITES[4].id]);
+  const [ids, setIds] = useState([LUNAR_SITES[0]!.id, LUNAR_SITES[2]!.id, LUNAR_SITES[4]!.id]);
   const [dateStr, setDateStr] = useState("2026-10-05T18:30");
   const weather = useSpaceWeather();
   const date = useMemo(() => {
