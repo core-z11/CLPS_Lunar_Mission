@@ -19,8 +19,8 @@ export const SkyTimeline = memo(function SkyTimeline({
   const elMin = -12;
   const elMax = 16;
   if (!samples.length) return null;
-  const t0 = samples[0].time.getTime();
-  const t1 = samples[samples.length - 1].time.getTime();
+  const t0 = samples[0]!.time.getTime();
+  const t1 = samples[samples.length - 1]!.time.getTime();
   const x = (t: number) => ((t - t0) / (t1 - t0 || 1)) * W;
   const y = (el: number) =>
     (H - band - 4) * (1 - (Math.max(elMin, Math.min(elMax, el)) - elMin) / (elMax - elMin));
@@ -59,9 +59,9 @@ export const SkyTimeline = memo(function SkyTimeline({
       {samples.slice(1).map((s, i) => (
         <rect
           key={i}
-          x={x(samples[i].time.getTime())}
+          x={x(samples[i]!.time.getTime())}
           y={H - band}
-          width={Math.max(0.5, x(s.time.getTime()) - x(samples[i].time.getTime()))}
+          width={Math.max(0.5, x(s.time.getTime()) - x(samples[i]!.time.getTime()))}
           height={band}
           className={s.relayLinks > 0 ? "fill-relay/70" : "fill-critical/40"}
         />

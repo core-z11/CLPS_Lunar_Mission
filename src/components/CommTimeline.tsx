@@ -15,8 +15,8 @@ export const CommTimeline = memo(function CommTimeline({
   enabled: Set<string>;
 }) {
   if (!samples.length) return null;
-  const t0 = samples[0].time.getTime();
-  const t1 = samples[samples.length - 1].time.getTime();
+  const t0 = samples[0]!.time.getTime();
+  const t1 = samples[samples.length - 1]!.time.getTime();
   const lanes: { label: string; tone: string; on: (s: SamplePoint) => boolean }[] = [
     { label: "SUN", tone: "bg-sun", on: (s) => s.sunElevation > 0 },
     { label: "DIRECT EARTH", tone: "bg-earth", on: (s) => s.earthElevation > 0 },

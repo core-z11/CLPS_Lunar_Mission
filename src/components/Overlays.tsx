@@ -4,7 +4,7 @@ import { Badge, type Tone } from "./kit";
 export const wxTone = (s?: string): Tone =>
   s === "QUIET" ? "favorable" : s === "ELEVATED" ? "caution" : s === "ACTIVE" || s === "SEVERE" ? "critical" : "unknown";
 
-export function SpaceWeatherContent({ data, loading }: { data?: SpaceWeatherPayload; loading: boolean }) {
+export function SpaceWeatherContent({ data, loading }: { data?: SpaceWeatherPayload | undefined; loading: boolean }) {
   if (loading) return <p className="font-mono text-sm text-muted-foreground">Loading space weather…</p>;
   if (!data) return <p className="text-sm text-muted-foreground">Space weather data unavailable.</p>;
   const prov = (p: string) => <Badge tone={p === "LIVE" ? "favorable" : "caution"}>{p === "LIVE" ? "● Live" : "● Demo / cached"}</Badge>;

@@ -131,8 +131,8 @@ export function moonFrame(jd: number) {
     239.961 + 0.1643573 * d,
     25.053 + 12.9590088 * d,
   ];
-  const s = (i: number) => sinD(E[i - 1]);
-  const c = (i: number) => cosD(E[i - 1]);
+  const s = (i: number) => sinD(E[i - 1]!);
+  const c = (i: number) => cosD(E[i - 1]!);
 
   const ra =
     269.9949 +

@@ -20,8 +20,10 @@ export interface Moon3DRelay {
   link: boolean;
 }
 
-function MoonSphere({ onPick }: { onPick?: (lat: number, lon: number) => void }) {
-  const [color, height] = useLoader(THREE.TextureLoader, ["/textures/moon-color.jpg", "/textures/moon-height.jpg"]);
+function MoonSphere({ onPick }: { onPick?: ((lat: number, lon: number) => void) | undefined }) {
+  const [colorT, heightT] = useLoader(THREE.TextureLoader, ["/textures/moon-color.jpg", "/textures/moon-height.jpg"]);
+  const color = colorT!;
+  const height = heightT!;
   color.colorSpace = THREE.SRGBColorSpace;
   return (
     <mesh
