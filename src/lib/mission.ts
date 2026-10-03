@@ -132,7 +132,7 @@ export function extractWindows(
     if (ok && !start) start = s.time;
     const last = i === samples.length - 1;
     if (start && (!ok || last)) {
-      const end = ok && last ? s.time : samples[i].time;
+      const end = ok && last ? s.time : samples[i]!.time;
       windows.push({
         start,
         end,

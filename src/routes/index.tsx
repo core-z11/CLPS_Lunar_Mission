@@ -39,7 +39,7 @@ const DEMO_DATE = new Date(Date.UTC(2026, 9, 5, 18, 30));
 const iso = (d: Date) => d.toISOString().slice(0, 16);
 
 function Mission() {
-  const [siteId, setSiteId] = useState(LUNAR_SITES[0].id);
+  const [siteId, setSiteId] = useState(LUNAR_SITES[0]!.id);
   const [custom, setCustom] = useState<{ lat: number; lon: number } | null>(null);
   const [baseDate, setBaseDate] = useState(DEMO_DATE);
   const [offsetH, setOffsetH] = useState(0);
@@ -47,7 +47,7 @@ function Mission() {
   const [playing, setPlaying] = useState(false);
   const [view, setView] = useState<"3D" | "2D">("3D");
   const [radiusKm, setRadiusKm] = useState(0.5);
-  const [draft, setDraft] = useState({ lat: String(LUNAR_SITES[0].lat), lon: String(LUNAR_SITES[0].lon), date: iso(DEMO_DATE) });
+  const [draft, setDraft] = useState({ lat: String(LUNAR_SITES[0]!.lat), lon: String(LUNAR_SITES[0]!.lon), date: iso(DEMO_DATE) });
   const [err, setErr] = useState<string | null>(null);
   const [drawer, setDrawer] = useState<null | "check" | "terrain" | "weather" | "data">(null);
   const [camera, setCamera] = useState(false);
@@ -57,7 +57,7 @@ function Mission() {
 
   const weather = useSpaceWeather();
   const wx: SpaceWeatherLevel = weather.data?.status ?? "UNKNOWN";
-  const span = SPANS[spanIdx].hours;
+  const span = SPANS[spanIdx]!.hours;
   const date = useMemo(() => new Date(baseDate.getTime() + offsetH * 3600e3), [baseDate, offsetH]);
 
   useEffect(() => {
@@ -247,7 +247,7 @@ function Mission() {
             <p className="metric text-lg">{date.toISOString().replace("T", " ").slice(0, 16)}</p>
             <p className="font-mono text-[10px] text-muted-foreground">UTC · T{offsetH >= 0 ? "+" : "−"}{formatDuration(Math.abs(offsetH))}</p>
           </div>
-          <div className="starfield aspect-square w-full md:aspect-[16/11]">
+          <div className="starfield h-[440px] w-full md:h-[560px] lg:h-full lg:min-h-[640px]">
             {view === "3D" ? (
               <ClientOnly fallback={<Loading />}>
                 <Suspense fallback={<Loading />}>
@@ -303,7 +303,7 @@ function Mission() {
           />
           <StatusRow label="Relay" tone="relay" value={`${linked.length}`} state={relayState} stateTone={linked.length ? "relay" : "critical"} sub={`${linked.length} relays available · simulated`} />
           <StatusRow label="Space weather" tone="caution" value="" state={wx} stateTone={wxTone(wx)} sub={weather.data?.provenance === "LIVE" ? "● Live · NOAA SWPC" : "● Demo / cached"} />
-          <StatusRow label="Terrain" tone="unknown" value="" state={terrainState} stateTone={checks[0].tone} sub={`${site.meanSlope.toFixed(1)}° slope · ${site.terrainConfidence} confidence`} />
+          <StatusRow label="Terrain" tone="unknown" value="" state={terrainState} stateTone={checks[0]!.tone} sub={`${site.meanSlope.toFixed(1)}° slope · ${site.terrainConfidence} confidence`} />
 
           <div className="rounded-md border border-border bg-background/50 p-3">
             <p className="label-xs">Communication link</p>
@@ -407,7 +407,7 @@ function Mission() {
           <dt className="text-muted-foreground">Max slope</dt><dd className="metric text-right">{site.maxSlope.toFixed(1)}°</dd>
           <dt className="text-muted-foreground">Roughness</dt><dd className="metric text-right">{site.roughness.toFixed(2)}</dd>
           <dt className="text-muted-foreground">Local relief</dt><dd className="metric text-right">{site.reliefM} m</dd>
-          <dt className="text-muted-foreground">Terrain</dt><dd className="text-right"><Badge tone={checks[0].tone}>{terrainState === "PASS" ? "✓ Favorable" : terrainState === "REVIEW" ? "! Review" : "? No data"}</Badge></dd>
+          <dt className="text-muted-foreground">Terrain</dt><dd className="text-right"><Badge tone={checks[0]!.tone}>{terrainState === "PASS" ? "✓ Favorable" : terrainState === "REVIEW" ? "! Review" : "? No data"}</Badge></dd>
           <dt className="text-muted-foreground">Data</dt><dd className="text-right text-xs">{custom ? "Modelled (no measured data)" : "Estimate · NASA LOLA literature"}</dd>
         </dl>
       </Drawer>

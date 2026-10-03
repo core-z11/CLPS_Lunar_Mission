@@ -124,7 +124,7 @@ export const LUNAR_SITES: LunarSite[] = [
   },
 ];
 
-export const findSite = (id: string) => LUNAR_SITES.find((s) => s.id === id) ?? LUNAR_SITES[0];
+export const findSite = (id: string) => LUNAR_SITES.find((s) => s.id === id) ?? LUNAR_SITES[0]!;
 
 export interface CustomSite {
   id: "custom";
