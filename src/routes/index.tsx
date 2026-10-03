@@ -303,7 +303,7 @@ function Mission() {
           />
           <StatusRow label="Relay" tone="relay" value={`${linked.length}`} state={relayState} stateTone={linked.length ? "relay" : "critical"} sub={`${linked.length} relays available · simulated`} />
           <StatusRow label="Space weather" tone="caution" value="" state={wx} stateTone={wxTone(wx)} sub={weather.data?.provenance === "LIVE" ? "● Live · NOAA SWPC" : "● Demo / cached"} />
-          <StatusRow label="Terrain" tone="unknown" value="" state={terrainState} stateTone={checks[0].tone} sub={`${site.meanSlope.toFixed(1)}° slope · ${site.terrainConfidence} confidence`} />
+          <StatusRow label="Terrain" tone="unknown" value="" state={terrainState} stateTone={checks[0]!.tone} sub={`${site.meanSlope.toFixed(1)}° slope · ${site.terrainConfidence} confidence`} />
 
           <div className="rounded-md border border-border bg-background/50 p-3">
             <p className="label-xs">Communication link</p>
@@ -407,7 +407,7 @@ function Mission() {
           <dt className="text-muted-foreground">Max slope</dt><dd className="metric text-right">{site.maxSlope.toFixed(1)}°</dd>
           <dt className="text-muted-foreground">Roughness</dt><dd className="metric text-right">{site.roughness.toFixed(2)}</dd>
           <dt className="text-muted-foreground">Local relief</dt><dd className="metric text-right">{site.reliefM} m</dd>
-          <dt className="text-muted-foreground">Terrain</dt><dd className="text-right"><Badge tone={checks[0].tone}>{terrainState === "PASS" ? "✓ Favorable" : terrainState === "REVIEW" ? "! Review" : "? No data"}</Badge></dd>
+          <dt className="text-muted-foreground">Terrain</dt><dd className="text-right"><Badge tone={checks[0]!.tone}>{terrainState === "PASS" ? "✓ Favorable" : terrainState === "REVIEW" ? "! Review" : "? No data"}</Badge></dd>
           <dt className="text-muted-foreground">Data</dt><dd className="text-right text-xs">{custom ? "Modelled (no measured data)" : "Estimate · NASA LOLA literature"}</dd>
         </dl>
       </Drawer>
