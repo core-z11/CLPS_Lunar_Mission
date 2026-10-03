@@ -247,7 +247,7 @@ function Mission() {
             <p className="metric text-lg">{date.toISOString().replace("T", " ").slice(0, 16)}</p>
             <p className="font-mono text-[10px] text-muted-foreground">UTC · T{offsetH >= 0 ? "+" : "−"}{formatDuration(Math.abs(offsetH))}</p>
           </div>
-          <div className="starfield aspect-square w-full md:aspect-[16/11]">
+          <div className="starfield h-[440px] w-full md:h-[560px] lg:h-full lg:min-h-[640px]">
             {view === "3D" ? (
               <ClientOnly fallback={<Loading />}>
                 <Suspense fallback={<Loading />}>

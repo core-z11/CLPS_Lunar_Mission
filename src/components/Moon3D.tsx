@@ -62,7 +62,7 @@ export const Moon3D = memo(function Moon3D({
   const anyRelayLink = relays.some((r) => r.link);
 
   return (
-    <Canvas camera={{ position: [0.9, -2.4, 1.6], fov: 38 }} dpr={[1, 1.75]} gl={{ antialias: true }}>
+    <Canvas camera={{ position: [1.5, -4.6, 2.9], fov: 40 }} dpr={[1, 1.75]} gl={{ antialias: true }}>
       <ambientLight intensity={0.05} />
       <directionalLight position={toThree(sunDir, 10)} intensity={3.2} />
       <MoonSphere onPick={onPick} />
@@ -110,7 +110,7 @@ export const Moon3D = memo(function Moon3D({
         );
       })}
       {!anyRelayLink && null}
-      <OrbitControls enablePan={false} minDistance={1.4} maxDistance={6} target={[0, -0.35, 0]} />
+      <OrbitControls enablePan={false} minDistance={1.4} maxDistance={9} target={[0, -0.35, 0]} />
     </Canvas>
   );
 });
