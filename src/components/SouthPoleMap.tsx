@@ -35,7 +35,7 @@ export const SouthPoleMap = memo(function SouthPoleMap({
   onPickPoint,
   showLinks = true,
 }: {
-  selected: { lat: number; lon: number; id?: string };
+  selected: { lat: number; lon: number; id?: string | undefined };
   sunLon: number;
   earthLon: number;
   sunElevation: number;

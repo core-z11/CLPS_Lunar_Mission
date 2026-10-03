@@ -57,7 +57,7 @@ function Mission() {
 
   const weather = useSpaceWeather();
   const wx: SpaceWeatherLevel = weather.data?.status ?? "UNKNOWN";
-  const span = SPANS[spanIdx].hours;
+  const span = SPANS[spanIdx]!.hours;
   const date = useMemo(() => new Date(baseDate.getTime() + offsetH * 3600e3), [baseDate, offsetH]);
 
   useEffect(() => {
