@@ -101,11 +101,9 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 const NAV = [
-  { to: "/planner", label: "Mission Planner" },
-  { to: "/compare", label: "Compare Sites" },
-  { to: "/space-weather", label: "Space Weather" },
-  { to: "/relay", label: "Relay Network" },
-  { to: "/data", label: "Data Sources" },
+  { to: "/", label: "Mission" },
+  { to: "/explore", label: "Explore" },
+  { to: "/compare", label: "Compare" },
 ] as const;
 
 function RootComponent() {
@@ -120,7 +118,7 @@ function RootComponent() {
                 <span className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent via-transparent to-shadow-zone" />
               </span>
               <span className="text-[15px] font-semibold tracking-tight">LunaSight</span>
-              <span className="hidden label-xs lg:inline">South Pole Mission Planning</span>
+              <span className="hidden label-xs lg:inline">Find the Window. Plan the Mission.</span>
             </Link>
             <nav className="-mx-2 flex flex-1 items-center gap-1 overflow-x-auto md:justify-end">
               {NAV.map((n) => (
@@ -128,6 +126,7 @@ function RootComponent() {
                   key={n.to}
                   to={n.to}
                   className="whitespace-nowrap rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  activeOptions={{ exact: true }}
                   activeProps={{ className: "text-foreground bg-accent/70" }}
                 >
                   {n.label}
