@@ -55,9 +55,9 @@
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0.25rem;
 
-  --background: oklch(0.17 0.028 260);
+  --background: oklch(0.14 0.02 258);
   --foreground: oklch(0.95 0.008 250);
 
   --card: oklch(0.21 0.03 261);
@@ -65,10 +65,10 @@
   --popover: oklch(0.2 0.03 261);
   --popover-foreground: oklch(0.95 0.008 250);
 
-  --panel: oklch(0.22 0.028 261 / 72%);
+  --panel: oklch(0.19 0.022 258);
   --panel-strong: oklch(0.25 0.03 262);
 
-  --primary: oklch(0.65 0.16 250);
+  --primary: oklch(0.6 0.17 255);
   --primary-foreground: oklch(0.15 0.03 260);
   --secondary: oklch(0.28 0.026 261);
   --secondary-foreground: oklch(0.93 0.008 250);
@@ -120,8 +120,13 @@
 @utility panel {
   background-color: var(--panel);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  backdrop-filter: blur(10px);
+  border-radius: var(--radius-sm);
+  background-image:
+    linear-gradient(var(--primary), var(--primary)), linear-gradient(var(--primary), var(--primary)),
+    linear-gradient(var(--primary), var(--primary)), linear-gradient(var(--primary), var(--primary));
+  background-size: 10px 1px, 1px 10px, 10px 1px, 1px 10px;
+  background-position: top left, top left, bottom right, bottom right;
+  background-repeat: no-repeat;
 }
 
 @utility label-xs {
