@@ -226,7 +226,7 @@ function Mission() {
           {err && <p className="text-xs text-critical">{err}</p>}
           <Button className="w-full font-mono tracking-[0.15em]" onClick={analyze}>ANALYZE MISSION</Button>
           <div className="grid grid-cols-2 gap-2">
-            <Button variant="outline" className="font-mono text-[11px] tracking-[0.1em]" onClick={() => setDrawer("check")}>PRE-LANDING</Button>
+            <Button variant="outline" className="font-mono text-[11px] tracking-[0.1em]" onClick={() => setDrawer("check")}>CHECK</Button>
             <Button variant="outline" className="font-mono text-[11px] tracking-[0.1em]" onClick={() => setCamera(true)}>CAMERA</Button>
           </div>
 
@@ -467,9 +467,9 @@ function KidPanel({ scores, sunlit, comm, terrainState }: { scores: { terrain: n
     ["Weather", scores.spaceWeather],
   ] as const;
   const reasons = [
-    sunlit ? "good sunlight" : "the site is in shadow right now",
-    terrainState === "PASS" ? "smooth enough ground" : "ground that needs a closer look",
-    comm ? "a way to talk to Earth" : "no way to talk to Earth at this moment",
+    sunlit ? "The Sun is shining here." : "The site is in shadow right now.",
+    terrainState === "PASS" ? "The ground looks smooth enough." : "The ground needs a closer look.",
+    comm ? "Your probe can talk to Earth." : "Your probe can't reach Earth at this moment.",
   ];
   return (
     <div className="animate-fade-in">
@@ -482,12 +482,12 @@ function KidPanel({ scores, sunlit, comm, terrainState }: { scores: { terrain: n
       <div className="mt-5 space-y-3">
         {bars.map(([k, v]) => (
           <div key={k}>
-            <div className="mb-1 flex justify-between text-sm"><span>{k}</span><span className="font-mono text-xs text-muted-foreground">{"█".repeat(Math.round(v / 10))}{"░".repeat(10 - Math.round(v / 10))}</span></div>
+            <div className="mb-1 flex justify-between text-sm"><span>{k}</span><span className="font-mono text-xs text-muted-foreground">{v}</span></div>
             <ScoreBar value={v} tone={scoreTone(v)} />
           </div>
         ))}
       </div>
-      <p className="mt-4 text-sm text-muted-foreground">Your probe would have {reasons.join(", ")}.</p>
+      <p className="mt-4 text-sm text-muted-foreground">{reasons.join(" ")}</p>
       <p className="mt-3 border-t border-border pt-3 text-[11px] text-muted-foreground">
         An illustrative simulation score for learning — not a real landing probability and not a NASA assessment.
       </p>
