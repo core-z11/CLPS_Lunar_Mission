@@ -16,10 +16,10 @@ import { useSpaceWeather } from "@/lib/use-weather";
 
 const Moon3D = lazy(() => import("@/components/Moon3D"));
 
-const searchSchema = z.object({ lat: z.number().optional(), lon: z.number().optional() });
+const searchSchema = z.object({ lat: z.coerce.number().optional(), lon: z.coerce.number().optional() });
 
 export const Route = createFileRoute("/")({
-  validateSearch: (s) => searchSchema.parse({ lat: s.lat !== undefined ? Number(s.lat) : undefined, lon: s.lon !== undefined ? Number(s.lon) : undefined }),
+  validateSearch: (s: Record<string, unknown>) => searchSchema.parse(s),
   head: () => ({
     meta: [
       { title: "LunaSight — Find the Window. Plan the Mission." },
