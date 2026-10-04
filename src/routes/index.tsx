@@ -4,7 +4,7 @@ import { z } from "zod";
 import { CameraMode } from "@/components/CameraMode";
 import { CommTimeline } from "@/components/CommTimeline";
 import { Drawer } from "@/components/Drawer";
-import { Badge, Button, Field, inputClass, scoreTone, type Tone } from "@/components/kit";
+import { Badge, Button, Field, ScoreBar, inputClass, scoreTone, type Tone } from "@/components/kit";
 import { LocalSky } from "@/components/LocalSky";
 import { DataSourcesContent, SpaceWeatherContent, wxTone } from "@/components/Overlays";
 import { SouthPoleMap } from "@/components/SouthPoleMap";
@@ -16,7 +16,10 @@ import { useSpaceWeather } from "@/lib/use-weather";
 
 const Moon3D = lazy(() => import("@/components/Moon3D"));
 
+const searchSchema = z.object({ lat: z.coerce.number().optional(), lon: z.coerce.number().optional() });
+
 export const Route = createFileRoute("/")({
+  validateSearch: (s: Record<string, unknown>) => searchSchema.parse(s),
   head: () => ({
     meta: [
       { title: "LunaSight — Find the Window. Plan the Mission." },
@@ -39,6 +42,9 @@ const DEMO_DATE = new Date(Date.UTC(2026, 9, 5, 18, 30));
 const iso = (d: Date) => d.toISOString().slice(0, 16);
 
 function Mission() {
+  const search = Route.useSearch();
+  const [mode, setMode] = useState<"kid" | "expert">("expert");
+  const [speed, setSpeed] = useState(10);
   const [siteId, setSiteId] = useState(LUNAR_SITES[0]!.id);
   const [custom, setCustom] = useState<{ lat: number; lon: number } | null>(null);
   const [baseDate, setBaseDate] = useState(DEMO_DATE);
@@ -53,6 +59,14 @@ function Mission() {
   const [camera, setCamera] = useState(false);
   const [observer, setObserver] = useState<{ lat: number; lon: number; acc: number } | null>(null);
   const [geoMsg, setGeoMsg] = useState<string | null>(null);
+  useEffect(() => {
+    if (search.lat !== undefined && search.lon !== undefined && search.lat <= -75) {
+      const m = LUNAR_SITES.find((s) => Math.abs(s.lat - search.lat!) < 0.01 && Math.abs(s.lon - search.lon!) < 0.01);
+      if (m) setSiteId(m.id);
+      else setCustom({ lat: search.lat, lon: search.lon });
+      setDraft((d) => ({ ...d, lat: String(search.lat), lon: String(search.lon) }));
+    }
+  }, [search.lat, search.lon]);
   const enabled = useMemo(() => new Set(RELAYS.map((r) => r.id)), []);
 
   const weather = useSpaceWeather();
@@ -67,12 +81,12 @@ function Mission() {
     const tick = (t: number) => {
       const dt = (t - last) / 1000;
       last = t;
-      setOffsetH((h) => (h + dt * (span / 40) > span / 2 ? -span / 2 : h + dt * (span / 40)));
+      setOffsetH((h) => (h + (dt * speed) / 60 > span / 2 ? -span / 2 : h + (dt * speed) / 60));
       id = requestAnimationFrame(tick);
     };
     id = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(id);
-  }, [playing, span]);
+  }, [playing, span, speed]);
 
   const site: LunarSite = useMemo(
     () =>
@@ -164,11 +178,16 @@ function Mission() {
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
           <Badge tone="caution">● Demo simulation</Badge>
-          <Button variant="primary" onClick={() => setDrawer("check")}>Pre-landing check</Button>
-          <Button variant="outline" onClick={() => setDrawer("terrain")}>Terrain</Button>
-          <Button variant="outline" onClick={() => setDrawer("weather")}>Space weather</Button>
-          <Button variant="outline" onClick={() => setCamera(true)}>Camera</Button>
-          <Button variant="ghost" onClick={() => setDrawer("data")}>Data sources</Button>
+          <div className="flex border border-border p-0.5">
+            {(["kid", "expert"] as const).map((m) => (
+              <button key={m} onClick={() => setMode(m)} className={`px-3 py-1 font-mono text-[11px] tracking-[0.12em] ${mode === m ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+                {m === "kid" ? "KID MODE" : "EXPERT VIEW"}
+              </button>
+            ))}
+          </div>
+          <Button variant="ghost" onClick={() => setDrawer("terrain")}>Terrain</Button>
+          <Button variant="ghost" onClick={() => setDrawer("weather")}>Weather</Button>
+          <Button variant="ghost" onClick={() => setDrawer("data")}>Sources</Button>
         </div>
       </div>
 
@@ -205,7 +224,11 @@ function Mission() {
             <input type="datetime-local" className={inputClass} value={draft.date} onChange={(e) => setDraft({ ...draft, date: e.target.value })} />
           </Field>
           {err && <p className="text-xs text-critical">{err}</p>}
-          <Button className="w-full tracking-[0.15em]" onClick={analyze}>ANALYZE</Button>
+          <Button className="w-full font-mono tracking-[0.15em]" onClick={analyze}>ANALYZE MISSION</Button>
+          <div className="grid grid-cols-2 gap-2">
+            <Button variant="outline" className="font-mono text-[11px] tracking-[0.1em]" onClick={() => setDrawer("check")}>CHECK</Button>
+            <Button variant="outline" className="font-mono text-[11px] tracking-[0.1em]" onClick={() => setCamera(true)}>CAMERA</Button>
+          </div>
 
           <div className="border-t border-border pt-4">
             <p className="label-xs">Landing zone</p>
@@ -291,6 +314,9 @@ function Mission() {
 
         {/* RIGHT — mission status */}
         <aside className="panel order-3 flex flex-col gap-4 p-4">
+          {mode === "kid" ? (
+            <KidPanel scores={scores} sunlit={now.sunlit} comm={route !== "GAP"} terrainState={terrainState} />
+          ) : (<>
           <p className="label-xs text-foreground">Mission status</p>
           <StatusRow label="Sun" tone="sun" value={formatDeg(now.sun.elevation)} state={now.sunlit ? "VISIBLE" : "SHADOW"} stateTone={sunTone} sub={`Az ${formatAz(now.sun.azimuth)} · Power window ${now.sun.elevation > 0.5 ? "AVAILABLE" : "CLOSED"}`} />
           <StatusRow
@@ -333,6 +359,7 @@ function Mission() {
             <p className="metric mt-1 text-xs text-muted-foreground">Planning indicator {scores.overall}/100 · not a landing clearance</p>
           </div>
 
+          </>)}
           <div>
             <p className="label-xs">Mission log</p>
             <ul className="mt-2 space-y-1 font-mono text-[11px]">
@@ -361,6 +388,11 @@ function Mission() {
           <div className="mb-4 flex flex-wrap items-center gap-3">
             <p className="label-xs text-foreground">Communication window</p>
             <div className="ml-auto flex items-center gap-2">
+              <div className="flex border border-input p-0.5">
+                {[1, 10, 100].map((s) => (
+                  <button key={s} onClick={() => setSpeed(s)} className={`px-2 py-1 font-mono text-xs ${s === speed ? "bg-accent text-foreground" : "text-muted-foreground"}`}>{s}×</button>
+                ))}
+              </div>
               <Button variant="outline" className="w-20 py-1" onClick={() => setPlaying((p) => !p)}>{playing ? "❚❚ Pause" : "▶ Play"}</Button>
               <div className="flex rounded-md border border-input p-0.5">
                 {SPANS.map((s, i) => (
@@ -421,6 +453,44 @@ function Mission() {
       </Drawer>
 
       {camera && <CameraMode onClose={() => setCamera(false)} siteName={site.name} sun={now.sun} earth={now.earth} status={scores.overall >= 70 ? "Further review" : "Requires review"} />}
+    </div>
+  );
+}
+
+function KidPanel({ scores, sunlit, comm, terrainState }: { scores: { terrain: number; illumination: number; communication: number; spaceWeather: number; overall: number }; sunlit: boolean; comm: boolean; terrainState: string }) {
+  const pct = Math.max(5, Math.min(97, Math.round(scores.overall * 0.6 + (sunlit ? 15 : 0) + (comm ? 15 : 0) + (terrainState === "PASS" ? 5 : 0))));
+  const good = pct >= 70;
+  const bars = [
+    ["Terrain", scores.terrain],
+    ["Sunlight", scores.illumination],
+    ["Communication", scores.communication],
+    ["Weather", scores.spaceWeather],
+  ] as const;
+  const reasons = [
+    sunlit ? "The Sun is shining here." : "The site is in shadow right now.",
+    terrainState === "PASS" ? "The ground looks smooth enough." : "The ground needs a closer look.",
+    comm ? "Your probe can talk to Earth." : "Your probe can't reach Earth at this moment.",
+  ];
+  return (
+    <div className="animate-fade-in">
+      <p className="label-xs">Simulated landing confidence</p>
+      <div className="mt-3 flex items-baseline gap-2">
+        <span className={`metric text-6xl font-light ${good ? "text-favorable" : "text-caution"}`}>{pct}%</span>
+        <span className="text-2xl" aria-hidden>🚀</span>
+      </div>
+      <p className="mt-2 text-lg">{good ? "Mission looks promising!" : "This spot needs more planning."}</p>
+      <div className="mt-5 space-y-3">
+        {bars.map(([k, v]) => (
+          <div key={k}>
+            <div className="mb-1 flex justify-between text-sm"><span>{k}</span><span className="font-mono text-xs text-muted-foreground">{v}</span></div>
+            <ScoreBar value={v} tone={scoreTone(v)} />
+          </div>
+        ))}
+      </div>
+      <p className="mt-4 text-sm text-muted-foreground">{reasons.join(" ")}</p>
+      <p className="mt-3 border-t border-border pt-3 text-[11px] text-muted-foreground">
+        An illustrative simulation score for learning — not a real landing probability and not a NASA assessment.
+      </p>
     </div>
   );
 }

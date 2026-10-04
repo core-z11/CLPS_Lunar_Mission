@@ -22,7 +22,7 @@ export function CameraMode({
   useEffect(() => {
     let stream: MediaStream | null = null;
     if (!navigator.mediaDevices?.getUserMedia) {
-      setError("Camera is not available on this device or browser.");
+      setError("Camera mode is available on supported mobile devices.");
       return;
     }
     navigator.mediaDevices
