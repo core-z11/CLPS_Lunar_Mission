@@ -17,8 +17,9 @@
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
 
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -55,45 +56,48 @@
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0.2rem;
 
-  --background: oklch(0.14 0.02 258);
-  --foreground: oklch(0.95 0.008 250);
+  /* Space navy #050A14 / #07111F */
+  --background: #050a14;
+  --foreground: #f5f7fa;
 
-  --card: oklch(0.21 0.03 261);
-  --card-foreground: oklch(0.95 0.008 250);
-  --popover: oklch(0.2 0.03 261);
-  --popover-foreground: oklch(0.95 0.008 250);
+  --card: #0b1b2b;
+  --card-foreground: #f5f7fa;
+  --popover: #07111f;
+  --popover-foreground: #f5f7fa;
 
-  --panel: oklch(0.19 0.022 258);
-  --panel-strong: oklch(0.25 0.03 262);
+  /* Aerospace blue surfaces #0B1B2B / #10263A */
+  --panel: color-mix(in oklab, #07111f 88%, transparent);
+  --panel-strong: #10263a;
 
-  --primary: oklch(0.6 0.17 255);
-  --primary-foreground: oklch(0.15 0.03 260);
-  --secondary: oklch(0.28 0.026 261);
-  --secondary-foreground: oklch(0.93 0.008 250);
-  --muted: oklch(0.26 0.024 261);
-  --muted-foreground: oklch(0.72 0.016 255);
-  --accent: oklch(0.3 0.04 255);
-  --accent-foreground: oklch(0.96 0.006 250);
+  /* NASA blue #0B5FFF, secondary #4AA3FF */
+  --primary: #1e6fff;
+  --primary-foreground: #f5f7fa;
+  --secondary: #0b1b2b;
+  --secondary-foreground: #f5f7fa;
+  --muted: #10263a;
+  --muted-foreground: #aab7c5;
+  --accent: #10263a;
+  --accent-foreground: #f5f7fa;
 
-  --destructive: oklch(0.6 0.2 22);
-  --destructive-foreground: oklch(0.97 0.006 250);
+  --destructive: #e01b24;
+  --destructive-foreground: #f5f7fa;
 
-  --border: oklch(0.36 0.026 258 / 55%);
-  --input: oklch(0.32 0.026 258 / 70%);
-  --ring: oklch(0.65 0.16 250);
+  --border: color-mix(in oklab, #4aa3ff 16%, transparent);
+  --input: color-mix(in oklab, #4aa3ff 22%, transparent);
+  --ring: #4aa3ff;
 
-  --sun: oklch(0.82 0.14 78);
-  --earth: oklch(0.72 0.12 236);
-  --relay: oklch(0.8 0.06 200);
-  --favorable: oklch(0.72 0.15 155);
-  --caution: oklch(0.79 0.14 80);
-  --critical: oklch(0.63 0.2 25);
-  --unknown: oklch(0.62 0.012 255);
-  --grid: oklch(0.45 0.02 258 / 40%);
-  --regolith: oklch(0.42 0.012 255);
-  --shadow-zone: oklch(0.13 0.02 262);
+  --sun: #ffb347;
+  --earth: #4aa3ff;
+  --relay: #43c7ff;
+  --favorable: #45c486;
+  --caution: #f5a623;
+  --critical: #e01b24;
+  --unknown: #718096;
+  --grid: color-mix(in oklab, #4aa3ff 14%, transparent);
+  --regolith: #5b6573;
+  --shadow-zone: #03070e;
 }
 
 @layer base {
@@ -112,19 +116,42 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
   ::selection {
     background-color: color-mix(in oklab, var(--primary) 35%, transparent);
   }
+
+  :focus-visible {
+    outline: 1px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  button {
+    transition: color 150ms, background-color 150ms, border-color 150ms, transform 120ms;
+  }
+  button:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
 }
 
+/* HUD panel: thin hairline frame, blue corner ticks, no shadow, light blur over the Moon. */
 @utility panel {
   background-color: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
+  backdrop-filter: blur(6px);
   background-image:
-    linear-gradient(var(--primary), var(--primary)), linear-gradient(var(--primary), var(--primary)),
-    linear-gradient(var(--primary), var(--primary)), linear-gradient(var(--primary), var(--primary));
-  background-size: 10px 1px, 1px 10px, 10px 1px, 1px 10px;
+    linear-gradient(var(--earth), var(--earth)), linear-gradient(var(--earth), var(--earth)),
+    linear-gradient(var(--earth), var(--earth)), linear-gradient(var(--earth), var(--earth));
+  background-size: 12px 1px, 1px 12px, 12px 1px, 1px 12px;
   background-position: top left, top left, bottom right, bottom right;
   background-repeat: no-repeat;
 }
@@ -132,7 +159,8 @@
 @utility label-xs {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
@@ -140,18 +168,20 @@
 @utility metric {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 @utility starfield {
+  background-color: var(--background);
   background-image:
-    radial-gradient(1px 1px at 12% 22%, oklch(0.95 0 0 / 55%) 50%, transparent 51%),
-    radial-gradient(1px 1px at 68% 14%, oklch(0.95 0 0 / 40%) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 84% 62%, oklch(0.95 0 0 / 35%) 50%, transparent 51%),
-    radial-gradient(1px 1px at 33% 78%, oklch(0.95 0 0 / 30%) 50%, transparent 51%),
-    radial-gradient(1px 1px at 52% 44%, oklch(0.95 0 0 / 25%) 50%, transparent 51%),
-    radial-gradient(1200px 700px at 78% -10%, oklch(0.32 0.05 252 / 55%), transparent 70%),
-    radial-gradient(900px 600px at 5% 110%, oklch(0.26 0.04 262 / 60%), transparent 70%);
+    radial-gradient(1px 1px at 12% 22%, #f5f7fa8c 50%, transparent 51%),
+    radial-gradient(1px 1px at 68% 14%, #f5f7fa66 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 84% 62%, #f5f7fa59 50%, transparent 51%),
+    radial-gradient(1px 1px at 33% 78%, #f5f7fa4d 50%, transparent 51%),
+    radial-gradient(1px 1px at 52% 44%, #f5f7fa40 50%, transparent 51%),
+    radial-gradient(1px 1px at 91% 31%, #f5f7fa40 50%, transparent 51%),
+    radial-gradient(1px 1px at 4% 58%, #f5f7fa33 50%, transparent 51%),
+    radial-gradient(1100px 700px at 50% 45%, #0b1b2b99, transparent 70%);
 }
 
 @keyframes beam {
