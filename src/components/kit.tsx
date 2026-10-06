@@ -102,7 +102,7 @@ export function Button({
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "ghost" | "outline" }) {
   const variants = {
     primary:
-      "bg-primary text-primary-foreground hover:bg-primary/85 border border-primary/40 font-medium",
+      "bg-primary text-primary-foreground hover:bg-primary/85 border border-earth/40 font-medium",
     outline: "border border-border bg-panel-strong/60 text-foreground hover:bg-accent",
     ghost: "text-muted-foreground hover:text-foreground hover:bg-accent/60",
   } as const;
