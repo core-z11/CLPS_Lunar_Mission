@@ -49,8 +49,8 @@ export function CameraMode({
             EXIT ✕
           </button>
         </div>
-        <div className="pointer-events-none mx-auto h-56 w-56 rounded-full border-2 border-dashed border-primary/80">
-          <p className="mt-[calc(100%+8px)] text-center font-mono text-xs text-primary">MOON · MANUAL ALIGNMENT</p>
+        <div className="pointer-events-none mx-auto h-56 w-56 rounded-full border-2 border-dashed border-earth/80">
+          <p className="mt-[calc(100%+8px)] text-center font-mono text-xs text-earth">MOON · MANUAL ALIGNMENT</p>
         </div>
         <div className="panel grid grid-cols-2 gap-3 p-4 text-sm md:grid-cols-4">
           <div>

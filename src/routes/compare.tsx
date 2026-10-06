@@ -46,7 +46,7 @@ function Compare() {
     <div className="mx-auto max-w-[1200px] px-4 py-6">
       <div className="flex flex-wrap items-end gap-4">
         <div>
-          <p className="label-xs text-primary">Compare sites</p>
+          <p className="label-xs text-earth">Compare sites</p>
           <p className="text-sm text-muted-foreground">Same date for all sites. Change the date to update every column.</p>
         </div>
         <input type="datetime-local" className={`${inputClass} ml-auto w-auto`} value={dateStr} onChange={(e) => setDateStr(e.target.value)} />

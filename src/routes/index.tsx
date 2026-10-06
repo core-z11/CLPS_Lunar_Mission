@@ -173,7 +173,7 @@ function Mission() {
       {/* Mission header strip */}
       <div className="mb-3 flex flex-wrap items-center gap-x-6 gap-y-2">
         <div>
-          <p className="label-xs text-primary">Mission 01 · South pole landing</p>
+          <p className="label-xs text-earth">Mission 01 · South pole landing</p>
           <p className="text-sm text-muted-foreground">Objective: find an illumination + communication window.</p>
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
@@ -247,7 +247,7 @@ function Mission() {
               <div className="mt-2 text-sm">
                 <p className="metric">{observer.lat.toFixed(3)}°, {observer.lon.toFixed(3)}°</p>
                 <p className="text-xs text-muted-foreground">±{Math.round(observer.acc)} m · this session only</p>
-                <button className="mt-1 text-xs text-primary hover:underline" onClick={() => setObserver(null)}>Clear location</button>
+                <button className="mt-1 text-xs text-earth hover:underline" onClick={() => setObserver(null)}>Clear location</button>
               </div>
             ) : (
               <Button variant="outline" className="mt-2 w-full" onClick={locate}>Use my location</Button>
@@ -307,7 +307,7 @@ function Mission() {
             <span className="text-sun">● SUN</span>
             <span className="text-earth">● EARTH</span>
             <span className="text-relay">◆ SIMULATED RELAY</span>
-            <span className="text-primary">○ LANDING SITE</span>
+            <span className="text-earth">○ LANDING SITE</span>
             <span>Click the Moon to set a site</span>
           </div>
         </section>
@@ -346,14 +346,14 @@ function Mission() {
                   </span>
                 </>
               )}
-              <span className="text-primary">PROBE</span>
+              <span className="text-earth">PROBE</span>
             </div>
             <p className={`mt-2 font-mono text-xs ${route === "GAP" ? "text-critical" : "text-relay"}`}>
               {route === "DIRECT" ? "DIRECT-TO-EARTH" : route === "AVAILABLE" ? "VIA SIMULATED RELAY" : "NETWORK GAP"}
             </p>
           </div>
 
-          <div className="rounded-md border border-primary/30 bg-primary/5 p-4">
+          <div className="rounded-md border border-earth/30 bg-primary/5 p-4">
             <p className="label-xs">Mission readiness</p>
             <p className={`mt-1 text-lg font-medium ${scores.overall >= 70 ? "text-favorable" : "text-caution"}`}>{scores.overall >= 70 ? "READY FOR FURTHER REVIEW" : "REQUIRES REVIEW"}</p>
             <p className="metric mt-1 text-xs text-muted-foreground">Planning indicator {scores.overall}/100 · not a landing clearance</p>
