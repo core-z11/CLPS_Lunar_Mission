@@ -169,12 +169,12 @@ function Mission() {
   const route = live.endToEnd;
 
   return (
-    <div className="mx-auto max-w-[1600px] px-3 pb-8 pt-4 md:px-5">
+    <div className="px-3 pb-8 pt-3 md:px-4">
       {/* Mission header strip */}
-      <div className="mb-3 flex flex-wrap items-center gap-x-6 gap-y-2">
+      <div className="mb-3 flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-border pb-3">
         <div>
-          <p className="label-xs text-earth">Mission 01 · South pole landing</p>
-          <p className="text-sm text-muted-foreground">Objective: find an illumination + communication window.</p>
+          <p className="label-xs text-sun">Mission 01 · South pole landing</p>
+          <p className="font-display text-lg font-semibold tracking-tight">Objective: find an illumination + communication window.</p>
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
           <Badge tone="caution">● Demo simulation</Badge>
@@ -191,9 +191,9 @@ function Mission() {
         </div>
       </div>
 
-      <div className="grid gap-3 lg:grid-cols-[260px_1fr_290px]">
+      <div className="relative grid gap-3 lg:block lg:h-[calc(100vh-150px)] lg:min-h-[700px]">
         {/* LEFT — mission target */}
-        <aside className="panel order-2 space-y-4 p-4 lg:order-1">
+        <aside className="panel order-2 space-y-4 p-4 lg:absolute lg:bottom-4 lg:left-4 lg:top-4 lg:z-20 lg:w-[256px] lg:overflow-y-auto lg:bg-panel/90">
           <p className="label-xs text-foreground">Mission target</p>
           <Field label="Landing site">
             <select
@@ -259,18 +259,18 @@ function Mission() {
         </aside>
 
         {/* CENTER — Moon */}
-        <section className="panel relative order-1 overflow-hidden lg:order-2">
-          <div className="absolute left-3 top-3 z-10 flex rounded-md border border-border bg-background/70 p-0.5 backdrop-blur">
+        <section className="relative order-1 overflow-hidden border border-border lg:absolute lg:inset-0">
+          <div className="absolute left-3 top-3 z-30 flex border border-border bg-background/80 p-0.5 lg:left-1/2 lg:-translate-x-[calc(100%+12px)]">
             {(["2D", "3D"] as const).map((v) => (
-              <button key={v} onClick={() => setView(v)} className={`rounded px-3 py-1 font-mono text-xs ${view === v ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>{v}</button>
+              <button key={v} onClick={() => setView(v)} className={`px-3 py-1 font-mono text-xs ${view === v ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>{v}</button>
             ))}
           </div>
-          <div className="absolute right-3 top-3 z-10 text-right">
+          <div className="absolute right-3 top-3 z-30 text-right lg:left-1/2 lg:right-auto lg:text-left">
             <p className="label-xs">Mission time</p>
             <p className="metric text-lg">{date.toISOString().replace("T", " ").slice(0, 16)}</p>
             <p className="font-mono text-[10px] text-muted-foreground">UTC · T{offsetH >= 0 ? "+" : "−"}{formatDuration(Math.abs(offsetH))}</p>
           </div>
-          <div className="starfield h-[440px] w-full md:h-[560px] lg:h-full lg:min-h-[640px]">
+          <div className="starfield h-[440px] w-full md:h-[560px] lg:h-full">
             {view === "3D" ? (
               <ClientOnly fallback={<Loading />}>
                 <Suspense fallback={<Loading />}>
@@ -303,7 +303,7 @@ function Mission() {
               </div>
             )}
           </div>
-          <div className="absolute bottom-3 left-3 flex flex-wrap gap-3 font-mono text-[10px] text-muted-foreground">
+          <div className="absolute bottom-3 left-3 z-30 flex flex-wrap gap-3 font-mono lg:left-1/2 lg:-translate-x-1/2 lg:justify-center text-[10px] text-muted-foreground">
             <span className="text-sun">● SUN</span>
             <span className="text-earth">● EARTH</span>
             <span className="text-relay">◆ SIMULATED RELAY</span>
@@ -313,7 +313,7 @@ function Mission() {
         </section>
 
         {/* RIGHT — mission status */}
-        <aside className="panel order-3 flex flex-col gap-4 p-4">
+        <aside className="panel order-3 flex flex-col gap-4 p-4 lg:absolute lg:bottom-4 lg:right-4 lg:top-4 lg:z-20 lg:w-[292px] lg:overflow-y-auto lg:bg-panel/90">
           {mode === "kid" ? (
             <KidPanel scores={scores} sunlit={now.sunlit} comm={route !== "GAP"} terrainState={terrainState} />
           ) : (<>
