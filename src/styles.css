@@ -60,45 +60,45 @@
   --radius: 0.2rem;
 
   /* Space navy #050A14 / #07111F */
-  --background: #ffffff;
-  --foreground: #24364a;
+  --background: #071522;
+  --foreground: #f2f5f7;
 
-  --card: #f4f6f8;
-  --card-foreground: #24364a;
-  --popover: #ffffff;
-  --popover-foreground: #24364a;
+  --card: #112a3f;
+  --card-foreground: #f2f5f7;
+  --popover: #0c1d2c;
+  --popover-foreground: #f2f5f7;
 
   /* Aerospace blue surfaces #0B1B2B / #10263A */
-  --panel: #ffffff;
-  --panel-strong: #eef2f5;
+  --panel: #0c1d2c;
+  --panel-strong: #17364e;
 
   /* NASA blue #0B5FFF, secondary #4AA3FF */
-  --primary: #1e63a5;
-  --primary-foreground: #ffffff;
-  --secondary: #eef2f5;
-  --secondary-foreground: #163a63;
-  --muted: #eef2f5;
-  --muted-foreground: #627386;
-  --accent: #eef2f5;
-  --accent-foreground: #163a63;
+  --primary: #1479c9;
+  --primary-foreground: #f2f5f7;
+  --secondary: #112a3f;
+  --secondary-foreground: #f2f5f7;
+  --muted: #17364e;
+  --muted-foreground: #b0bfcc;
+  --accent: #17364e;
+  --accent-foreground: #f2f5f7;
 
-  --destructive: #d83b32;
-  --destructive-foreground: #ffffff;
+  --destructive: #e05246;
+  --destructive-foreground: #f2f5f7;
 
-  --border: #d9e0e7;
-  --input: #d9e0e7;
-  --ring: #1e63a5;
+  --border: #1f4560;
+  --input: #24506e;
+  --ring: #5ba6d8;
 
-  --sun: #f2a93b;
-  --earth: #1e63a5;
-  --relay: #72a8d3;
-  --favorable: #4f956f;
-  --caution: #f2a93b;
-  --critical: #d83b32;
-  --unknown: #8a98a6;
-  --grid: #d9e0e7;
-  --regolith: #8a98a6;
-  --shadow-zone: #eef2f5;
+  --sun: #f5a340;
+  --earth: #5ba6d8;
+  --relay: #42c6e5;
+  --favorable: #55b47d;
+  --caution: #f5a340;
+  --critical: #e05246;
+  --unknown: #718495;
+  --grid: #1f4560;
+  --regolith: #718495;
+  --shadow-zone: #081a28;
 }
 
 @layer base {
@@ -107,7 +107,7 @@
   }
 
   html {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   body {
@@ -172,16 +172,20 @@
 }
 
 @utility starfield {
-  background-color: #f4f6f8;
+  background-color: #0c1d2c;
   background-image:
-    radial-gradient(circle at 1px 1px, #d9e0e7 1px, transparent 1.5px),
-    radial-gradient(900px 600px at 50% 45%, #ffffff, transparent 70%);
-  background-size: 28px 28px, 100% 100%;
+    radial-gradient(1px 1px at 12% 22%, #f2f5f7aa 50%, transparent 51%),
+    radial-gradient(1px 1px at 68% 14%, #f2f5f780 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 84% 62%, #f2f5f770 50%, transparent 51%),
+    radial-gradient(1px 1px at 33% 78%, #f2f5f760 50%, transparent 51%),
+    radial-gradient(1px 1px at 91% 31%, #f2f5f760 50%, transparent 51%),
+    radial-gradient(1px 1px at 6% 58%, #f2f5f750 50%, transparent 51%),
+    radial-gradient(1000px 700px at 50% 48%, #17364e, transparent 70%);
 }
 
 @utility ivory {
-  background-color: #f4f6f8;
-  color: #24364a;
+  background-color: #112a3f;
+  color: #f2f5f7;
 }
 
 @keyframes beam {
